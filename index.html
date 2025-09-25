@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rajbir Longia — Research</title>
+    <meta name="description" content="Personal research website for Rajbir Longia — Quantum Field Theory and Combinatorics." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23000000'/%3E%3Ctext x='50' y='58' text-anchor='middle' font-size='56' fill='%23ffffff' font-family='Arial, Helvetica, sans-serif'%3ERL%3C/text%3E%3C/svg%3E" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .card { border-radius: 1rem; border: 1px solid rgba(0,0,0,0.08); background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+      .dark .card { background: #0a0a0a; border-color: rgba(255,255,255,0.1); }
+      .btn { display: inline-flex; align-items: center; gap: .5rem; border-radius: .5rem; padding: .5rem .75rem; font-size: .875rem; border: 1px solid rgba(0,0,0,0.08); }
+      .dark .btn { border-color: rgba(255,255,255,0.12); }
+      .btn-secondary { background: #f3f4f6; }
+      .dark .btn-secondary { background: #1a1a1a; }
+      .badge { display: inline-flex; align-items: center; gap: .5rem; border-radius: 9999px; border: 1px solid rgba(0,0,0,0.08); padding: .25rem .625rem; font-size: .75rem; }
+      .dark .badge { border-color: rgba(255,255,255,0.12); }
+    </style>
+  </head>
+  <body class="h-full text-gray-900 dark:text-gray-100 bg-gradient-to-b from-white to-gray-50 dark:from-neutral-950 dark:to-neutral-900">
+    <div id="top"></div>
+    <header class="sticky top-0 z-40 border-b border-gray-200/70 dark:border-gray-800/80 backdrop-blur bg-white/80 dark:bg-neutral-950/70">
+      <nav class="mx-auto max-w-5xl px-4 md:px-6">
+        <div class="flex h-14 items-center justify-between">
+          <a href="#top" class="font-semibold tracking-tight text-lg flex items-center gap-2">
+            <div class="h-8 w-8 rounded-xl bg-black text-white grid place-items-center">RL</div>
+            <span>Rajbir • Research</span>
+          </a>
+          <div class="hidden md:flex items-center gap-6 text-sm">
+            <a class="hover:underline" href="#research">Research</a>
+            <a class="hover:underline" href="#publications">Publications</a>
+            <a class="hover:underline" href="#contact">Contact</a>
+            <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" aria-label="Toggle theme">
+              <i data-lucide="sun" class="h-5 w-5 hidden dark:block"></i>
+              <i data-lucide="moon" class="h-5 w-5 block dark:hidden"></i>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="mx-auto max-w-5xl px-4 md:px-6 pt-10 md:pt-14">
+      <div class="grid md:grid-cols-[1.15fr_.85fr] gap-8 items-start">
+        <div>
+          <h1 class="text-3xl md:text-5xl font-bold leading-tight tracking-tight mb-3">
+            Rajbir Longia
+          </h1>
+          <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-4">Quantum Field Theory and Combinatorics</p>
+
+          <div class="flex flex-wrap items-center gap-2 mb-6">
+            <span class="badge">
+              <i data-lucide="graduation-cap" class="h-4 w-4"></i> University of Waterloo
+            </span>
+            <span class="badge">
+              <i data-lucide="book-open" class="h-4 w-4"></i> Combinatorics and Optimization (Masters)
+            </span>
+            <span class="badge">
+              <i data-lucide="map-pin" class="h-4 w-4"></i> Waterloo, Canada
+            </span>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <a class="btn btn-secondary" href="mailto:rlongia@uwaterloo.ca?subject=Hello%20Rajbir">
+              <i data-lucide="mail" class="h-4 w-4"></i> Email
+            </a>
+            <a class="btn" href="https://scholar.google.com/" target="_blank" rel="noreferrer">
+              <i data-lucide="globe" class="h-4 w-4"></i> Scholar
+            </a>
+            <a class="btn" href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noreferrer">
+              ORCID
+            </a>
+          </div>
+
+          <div class="mt-6 text-sm text-gray-600 dark:text-gray-300 leading-relaxed space-y-3">
+            <p>
+              I’m a first year masters student at the University of Waterloo interested in the interplay of combinatorics,
+              geometry, and quantum field theory. I did my undergrad in mathematical physics at the University of Waterloo as well.
+              Recently I’ve been working on combinatorial aspects of cosmological correlators and building computational pipelines to study
+              the meromorphic continuation of Euler–Mellin integrals.
+            </p>
+            <p>
+              I enjoy studying fundamental physics through modern mathematical and computational techniques.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div class="relative">
+            <div class="absolute -inset-4 bg-gradient-to-tr from-black/10 to-fuchsia-500/10 blur-2xl rounded-3xl" aria-hidden="true"></div>
+            <div class="card relative overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-200/70 dark:ring-gray-800">
+              <img src="assets/headshot.jpg" alt="Headshot of Rajbir Longia" class="w-full aspect-[4/5] object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="mx-auto max-w-5xl px-4 md:px-6 pb-20 mt-10 space-y-14">
+      <section id="research" class="scroll-mt-24">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">Research Interests</h2>
+          <div class="flex-1 ml-6 h-px bg-gray-200 dark:bg-gray-800"></div>
+        </div>
+        <div class="card p-6">
+          <ul class="list-disc pl-6 space-y-2">
+            <li class="leading-relaxed">Scattering amplitudes &amp; positive geometry</li>
+            <li class="leading-relaxed">Cosmological correlators</li>
+            <li class="leading-relaxed">Euler–Mellin integrals</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="publications" class="scroll-mt-24">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">Publications &amp; Preprints</h2>
+          <div class="flex-1 ml-6 h-px bg-gray-200 dark:bg-gray-800"></div>
+        </div>
+
+        <div class="card p-4">
+          <div class="flex gap-2 border-b border-gray-200 dark:border-gray-800 px-2">
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent data-[active=true]:border-black dark:data-[active=true]:border-white" data-tab="all">All</button>
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="preprints">Preprints</button>
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="prep">In preparation</button>
+          </div>
+          <div class="p-4">
+            <div class="tab-panel" data-tab="all">
+              <p class="text-sm text-gray-600 dark:text-gray-300 text-center">Coming soon.</p>
+            </div>
+            <div class="tab-panel hidden" data-tab="preprints">
+              <p class="text-sm text-gray-600 dark:text-gray-300 text-center">Coming soon.</p>
+            </div>
+            <div class="tab-panel hidden" data-tab="prep">
+              <p class="text-sm text-gray-600 dark:text-gray-300 text-center">Coming soon.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="scroll-mt-24">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl md:text-3xl font-semibold tracking-tight">Contact</h2>
+          <div class="flex-1 ml-6 h-px bg-gray-200 dark:bg-gray-800"></div>
+        </div>
+        <div class="card p-6 text-sm">
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="mail" class="h-4 w-4"></i>
+              <a class="underline" href="mailto:rlongia@uwaterloo.ca">rlongia@uwaterloo.ca</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="book-open" class="h-4 w-4"></i>
+              <a class="underline" href="https://scholar.google.com/" target="_blank" rel="noreferrer">Google Scholar</a>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="link" class="h-4 w-4"></i>
+              <a class="underline" href="https://orcid.org/0000-0000-0000-0000" target="_blank" rel="noreferrer">ORCID</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-gray-200 dark:border-gray-800 py-8">
+      <div class="mx-auto max-w-5xl px-4 md:px-6 text-sm text-gray-600 dark:text-gray-300 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div>© <span id="year"></span> Rajbir Longia. All rights reserved.</div>
+        <div>Built with static HTML • Tailwind CDN • Lucide</div>
+      </div>
+    </footer>
+
+    <script>
+      if (window.lucide && lucide.createIcons) { lucide.createIcons(); }
+      // Theme toggle
+      (function(){
+        var toggle = document.getElementById('themeToggle');
+        var root = document.documentElement;
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (!('theme' in localStorage)) {
+          if (prefersDark) root.classList.add('dark');
+        } else {
+          if (localStorage.theme === 'dark') root.classList.add('dark');
+        }
+        if (toggle) {
+          toggle.addEventListener('click', function() {
+            root.classList.toggle('dark');
+            localStorage.theme = root.classList.contains('dark') ? 'dark' : 'light';
+            if (window.lucide && lucide.createIcons) lucide.createIcons();
+          });
+        }
+        // tabs
+        var btns = document.querySelectorAll('.tab-btn');
+        var panels = document.querySelectorAll('.tab-panel');
+        function setTab(name) {
+          btns.forEach(function(b){
+            var active = b.getAttribute('data-tab') === name;
+            b.dataset.active = active ? 'true' : 'false';
+          });
+          panels.forEach(function(p){
+            p.classList.toggle('hidden', p.getAttribute('data-tab') !== name);
+          });
+        }
+        btns.forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab')); }); });
+        setTab('all');
+        // year
+        var y = document.getElementById('year');
+        if (y) y.textContent = new Date().getFullYear();
+      })();
+    </script>
+  </body>
+</html>
