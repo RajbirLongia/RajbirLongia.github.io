@@ -27,26 +27,39 @@
       .dark .btn-secondary { background: #1a1a1a; }
       .badge { display: inline-flex; align-items: center; gap: .5rem; border-radius: 9999px; border: 1px solid rgba(0,0,0,0.08); padding: .25rem .625rem; font-size: .75rem; }
       .dark .badge { border-color: rgba(255,255,255,0.12); }
+      .tab-btn[aria-selected="true"] { border-bottom-color: currentColor; }
+      button:focus-visible, a:focus-visible, [role="tabpanel"]:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+      [hidden] { display: none !important; }
     </style>
   </head>
   <body class="h-full text-gray-900 dark:text-gray-100 bg-gradient-to-b from-white to-gray-50 dark:from-neutral-950 dark:to-neutral-900">
     <div id="top"></div>
     <header class="sticky top-0 z-40 border-b border-gray-200/70 dark:border-gray-800/80 backdrop-blur bg-white/80 dark:bg-neutral-950/70">
-      <nav class="mx-auto max-w-5xl px-4 md:px-6">
+      <nav aria-label="Main navigation" class="mx-auto max-w-5xl px-4 md:px-6">
         <div class="flex h-14 items-center justify-between">
           <a href="#top" class="font-semibold tracking-tight text-lg flex items-center gap-2">
             <div class="h-8 w-8 rounded-xl bg-black text-white grid place-items-center">RL</div>
-            <span>Rajbir • Research</span>
+            <span class="text-base sm:text-lg">Rajbir • Research</span>
           </a>
-          <div class="hidden md:flex items-center gap-6 text-sm">
+          <div class="flex items-center gap-2 md:gap-6 text-sm">
+            <div class="hidden md:flex items-center gap-6">
             <a class="hover:underline" href="#research">Research</a>
             <a class="hover:underline" href="#publications">Publications</a>
             <a class="hover:underline" href="#contact">Contact</a>
-            <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" aria-label="Toggle theme">
+            </div>
+            <button id="menuToggle" type="button" class="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileNav">
+              <i data-lucide="menu" class="h-5 w-5" aria-hidden="true"></i>
+            </button>
+            <button type="button" id="themeToggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" aria-label="Toggle theme">
               <i data-lucide="sun" class="h-5 w-5 hidden dark:block"></i>
               <i data-lucide="moon" class="h-5 w-5 block dark:hidden"></i>
             </button>
           </div>
+        </div>
+        <div id="mobileNav" class="md:hidden border-t border-gray-200 dark:border-gray-800 py-2 text-sm" hidden>
+          <a class="block rounded-lg px-2 py-3 hover:bg-gray-100 dark:hover:bg-neutral-800" href="#research">Research</a>
+          <a class="block rounded-lg px-2 py-3 hover:bg-gray-100 dark:hover:bg-neutral-800" href="#publications">Publications</a>
+          <a class="block rounded-lg px-2 py-3 hover:bg-gray-100 dark:hover:bg-neutral-800" href="#contact">Contact</a>
         </div>
       </nav>
     </header>
@@ -126,13 +139,13 @@
         </div>
 
         <div class="card p-4">
-          <div class="flex gap-2 border-b border-gray-200 dark:border-gray-800 px-2">
-            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent data-[active=true]:border-black dark:data-[active=true]:border-white" data-tab="all">All</button>
-            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="preprints">Preprints</button>
-            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="prep">In preparation</button>
+          <div role="tablist" aria-label="Publication categories" class="flex gap-2 border-b border-gray-200 dark:border-gray-800 px-2">
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="all" type="button" role="tab" id="tab-all" aria-controls="panel-all" aria-selected="true" tabindex="0">All</button>
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="preprints" type="button" role="tab" id="tab-preprints" aria-controls="panel-preprints" aria-selected="false" tabindex="-1">Preprints</button>
+            <button class="tab-btn px-2 py-2 text-sm font-medium border-b-2 border-transparent" data-tab="prep" type="button" role="tab" id="tab-prep" aria-controls="panel-prep" aria-selected="false" tabindex="-1">In preparation</button>
           </div>
           <div class="p-4">
-            <div class="tab-panel" data-tab="all">
+            <div class="tab-panel" data-tab="all" role="tabpanel" id="panel-all" aria-labelledby="tab-all" tabindex="0">
               <article class="space-y-2">
                 <h3 class="font-semibold leading-relaxed">
                   <a href="https://arxiv.org/abs/2610.40355" target="_blank" rel="noreferrer" class="hover:underline">Bounds on the Diagonal Degree of the Biadjoint Scalar Amplitude Matrix</a>
@@ -141,7 +154,7 @@
                 <p class="text-sm text-gray-600 dark:text-gray-300">Preprint (2026) &middot; <a href="https://arxiv.org/abs/2610.40355" target="_blank" rel="noreferrer" class="underline">arXiv:2610.40355</a></p>
               </article>
             </div>
-            <div class="tab-panel hidden" data-tab="preprints">
+            <div class="tab-panel" data-tab="preprints" role="tabpanel" id="panel-preprints" aria-labelledby="tab-preprints" tabindex="0" hidden>
               <article class="space-y-2">
                 <h3 class="font-semibold leading-relaxed">
                   <a href="https://arxiv.org/abs/2610.40355" target="_blank" rel="noreferrer" class="hover:underline">Bounds on the Diagonal Degree of the Biadjoint Scalar Amplitude Matrix</a>
@@ -150,7 +163,7 @@
                 <p class="text-sm text-gray-600 dark:text-gray-300">Preprint (2026) &middot; <a href="https://arxiv.org/abs/2610.40355" target="_blank" rel="noreferrer" class="underline">arXiv:2610.40355</a></p>
               </article>
             </div>
-            <div class="tab-panel hidden" data-tab="prep">
+            <div class="tab-panel" data-tab="prep" role="tabpanel" id="panel-prep" aria-labelledby="tab-prep" tabindex="0" hidden>
               <p class="text-sm text-gray-600 dark:text-gray-300 text-center">Coming soon.</p>
             </div>
           </div>
@@ -189,31 +202,83 @@
         var toggle = document.getElementById('themeToggle');
         var root = document.documentElement;
         var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (!('theme' in localStorage)) {
-          if (prefersDark) root.classList.add('dark');
-        } else {
-          if (localStorage.theme === 'dark') root.classList.add('dark');
+        var savedTheme;
+        try { savedTheme = localStorage.getItem('theme'); } catch (error) {}
+        root.classList.toggle('dark', savedTheme ? savedTheme === 'dark' : prefersDark);
+        function updateThemeLabel() {
+          toggle.setAttribute('aria-label', root.classList.contains('dark') ? 'Switch to light theme' : 'Switch to dark theme');
         }
         if (toggle) {
+          updateThemeLabel();
           toggle.addEventListener('click', function() {
             root.classList.toggle('dark');
-            localStorage.theme = root.classList.contains('dark') ? 'dark' : 'light';
-            if (window.lucide && lucide.createIcons) lucide.createIcons();
+            try { localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light'); } catch (error) {}
+            updateThemeLabel();
           });
         }
+        // Mobile navigation: disclosure, not an application menu.
+        var menuToggle = document.getElementById('menuToggle');
+        var mobileNav = document.getElementById('mobileNav');
+        var nav = menuToggle.closest('nav');
+        function closeMenu(restoreFocus) {
+          mobileNav.hidden = true;
+          menuToggle.setAttribute('aria-expanded', 'false');
+          if (restoreFocus) menuToggle.focus();
+        }
+        menuToggle.addEventListener('click', function() {
+          var open = menuToggle.getAttribute('aria-expanded') !== 'true';
+          mobileNav.hidden = !open;
+          menuToggle.setAttribute('aria-expanded', String(open));
+        });
+        nav.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape' && !mobileNav.hidden) {
+            closeMenu(true);
+          }
+        });
+        mobileNav.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', function() { closeMenu(true); });
+        });
+        document.addEventListener('click', function(event) {
+          if (!nav.contains(event.target)) closeMenu(false);
+        });
+        nav.addEventListener('focusout', function(event) {
+          if (!nav.contains(event.relatedTarget)) closeMenu(false);
+        });
+        var desktop = window.matchMedia('(min-width: 768px)');
+        desktop.addEventListener('change', function(event) {
+          if (event.matches) {
+            var moveFocus = mobileNav.contains(document.activeElement) || document.activeElement === menuToggle;
+            closeMenu(false);
+            if (moveFocus) toggle.focus();
+          }
+        });
         // tabs
         var btns = document.querySelectorAll('.tab-btn');
         var panels = document.querySelectorAll('.tab-panel');
         function setTab(name) {
           btns.forEach(function(b){
             var active = b.getAttribute('data-tab') === name;
-            b.dataset.active = active ? 'true' : 'false';
+            b.setAttribute('aria-selected', String(active));
+            b.tabIndex = active ? 0 : -1;
           });
           panels.forEach(function(p){
-            p.classList.toggle('hidden', p.getAttribute('data-tab') !== name);
+            p.hidden = p.getAttribute('data-tab') !== name;
           });
         }
-        btns.forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab')); }); });
+        btns.forEach(function(b, index) {
+          b.addEventListener('click', function() { setTab(b.getAttribute('data-tab')); });
+          b.addEventListener('keydown', function(event) {
+            var next;
+            if (event.key === 'ArrowRight') next = (index + 1) % btns.length;
+            else if (event.key === 'ArrowLeft') next = (index + btns.length - 1) % btns.length;
+            else if (event.key === 'Home') next = 0;
+            else if (event.key === 'End') next = btns.length - 1;
+            else return;
+            event.preventDefault();
+            setTab(btns[next].getAttribute('data-tab'));
+            btns[next].focus();
+          });
+        });
         setTab('all');
         // year
         var y = document.getElementById('year');
@@ -222,3 +287,4 @@
     </script>
   </body>
 </html>
+
