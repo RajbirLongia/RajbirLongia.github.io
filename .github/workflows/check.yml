@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      baseline_ref:
+        description: 'Optional commit SHA to compare unchanged content and layout against'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -12,10 +18,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: '22'
           cache: npm
@@ -26,16 +32,18 @@ jobs:
         run: git diff --exit-code -- assets
       - run: npx playwright install --with-deps chromium
       - name: Prepare original site for visual comparison
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'workflow_dispatch' && inputs.baseline_ref != ''
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: git worktree add --detach ../baseline "$BASE_SHA"
+          BASE_REF: ${{ inputs.baseline_ref }}
+        run: |
+          BASE_SHA=$(git rev-parse --verify --end-of-options "$BASE_REF^{commit}")
+          git worktree add --detach ../baseline "$BASE_SHA"
       - name: Check layouts and interactions
         env:
-          BASELINE_ROOT: ${{ github.event_name == 'pull_request' && '../baseline' || '' }}
+          BASELINE_ROOT: ${{ github.event_name == 'workflow_dispatch' && inputs.baseline_ref != '' && '../baseline' || '' }}
           SCREENSHOT_DIR: .qa/screenshots
         run: npm run test:browser
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: layout-screenshots

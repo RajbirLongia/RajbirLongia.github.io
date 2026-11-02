@@ -94,8 +94,10 @@ and layout geometry with an earlier checkout, and save before screenshots.
 `CHROMIUM_EXECUTABLE_PATH` can select an already-installed Chromium binary.
 
 GitHub Actions runs these checks on pull requests and `main`, verifies rebuilding
-does not change committed assets, and uploads screenshots. It does not change
-the static GitHub Pages deployment.
+does not change committed assets, and uploads screenshots. A manual workflow run
+can optionally take `baseline_ref` for an unchanged-design comparison; ordinary
+checks allow intentional research-content and layout edits. The workflow does
+not change the static GitHub Pages deployment.
 
 Before publishing changes, check desktop and narrow-screen layouts in both
 light and dark themes. Verify the menu opens/closes (including Escape and link
