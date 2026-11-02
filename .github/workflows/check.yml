@@ -1,0 +1,43 @@
+name: Check static site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: Verify checked-in generated assets
+        run: git diff --exit-code -- assets
+      - run: npx playwright install --with-deps chromium
+      - name: Prepare original site for visual comparison
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git worktree add --detach ../baseline "$BASE_SHA"
+      - name: Check layouts and interactions
+        env:
+          BASELINE_ROOT: ${{ github.event_name == 'pull_request' && '../baseline' || '' }}
+          SCREENSHOT_DIR: .qa/screenshots
+        run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: layout-screenshots
+          path: .qa/screenshots
+          if-no-files-found: ignore
