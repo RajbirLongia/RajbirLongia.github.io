@@ -5,6 +5,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <script>
+      // Apply the theme before any styles load to avoid a light-mode flash.
+      (function(){
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var savedTheme;
+        try { savedTheme = localStorage.getItem('theme'); } catch (error) {}
+        document.documentElement.classList.toggle('dark', savedTheme ? savedTheme === 'dark' : prefersDark);
+      })();
+    </script>
+
     <link rel="canonical" href="https://www.rajbirlongia.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Rajbir Longia - Quantum Field Theory & Combinatorics" />
@@ -211,10 +221,6 @@
       (function(){
         var toggle = document.getElementById('themeToggle');
         var root = document.documentElement;
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var savedTheme;
-        try { savedTheme = localStorage.getItem('theme'); } catch (error) {}
-        root.classList.toggle('dark', savedTheme ? savedTheme === 'dark' : prefersDark);
         function updateThemeLabel() {
           toggle.setAttribute('aria-label', root.classList.contains('dark') ? 'Switch to light theme' : 'Switch to dark theme');
         }

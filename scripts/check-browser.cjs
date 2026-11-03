@@ -9,6 +9,76 @@ const screenshotDir = process.env.SCREENSHOT_DIR && path.resolve(process.env.SCR
 const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript',
   '.jpg': 'image/jpeg', '.webp': 'image/webp', '.avif': 'image/avif' };
 
+async function checkInitialThemes(browser, url, html) {
+  // Capture the real theme before the first stylesheet is parsed. Checking only
+  // after navigation would let the end-of-body script hide a light-mode flash.
+  const firstStyle = html.search(/<style\b|<link\b[^>]*\brel\s*=\s*["']stylesheet["']/i);
+  assert(firstStyle >= 0, 'Expected a stylesheet to probe initial theme timing');
+  const probe = `<script>
+    window.__themeBeforeStyles = {
+      dark: document.documentElement.classList.contains('dark'),
+      bodyParsed: document.body !== null,
+      readyState: document.readyState
+    };
+  </script>`;
+  const probedHtml = html.slice(0, firstStyle) + probe + html.slice(firstStyle);
+  const cases = [
+    { colorScheme: 'light', savedTheme: 'dark', expectedDark: true },
+    { colorScheme: 'dark', savedTheme: 'light', expectedDark: false },
+    { colorScheme: 'light', savedTheme: 'light', expectedDark: false },
+    { colorScheme: 'dark', savedTheme: 'dark', expectedDark: true },
+    { colorScheme: 'light', expectedDark: false },
+    { colorScheme: 'dark', expectedDark: true },
+    { colorScheme: 'light', blockedStorage: true, expectedDark: false },
+    { colorScheme: 'dark', blockedStorage: true, expectedDark: true },
+  ];
+  for (const width of [390, 1440]) {
+    for (const { colorScheme, savedTheme, blockedStorage, expectedDark } of cases) {
+      const label = `${width}px, ${colorScheme} system, ${blockedStorage ? 'unavailable storage' : savedTheme ? `stored ${savedTheme}` : 'no saved theme'}`;
+      const context = await browser.newContext({
+        viewport: { width, height: 900 }, colorScheme,
+        storageState: { cookies: [], origins: [{ origin: new URL(url).origin,
+          localStorage: savedTheme ? [{ name: 'theme', value: savedTheme }] : [] }] },
+      });
+      try {
+        if (blockedStorage) await context.addInitScript(() => {
+          Object.defineProperty(window, 'localStorage', {
+            get() { throw new DOMException('Storage unavailable', 'SecurityError'); },
+          });
+        });
+        const page = await context.newPage();
+        const errors = [];
+        page.on('pageerror', (error) => errors.push(error.message));
+        await page.route(url, (route) => route.fulfill({ contentType: 'text/html', body: probedHtml }));
+        const theme = page.locator('#themeToggle');
+        const assertTheme = async (dark) => {
+          assert.equal(await page.locator('html').evaluate((el) => el.classList.contains('dark')), dark, label);
+          assert.equal(await theme.getAttribute('aria-label'), dark ? 'Switch to light theme' : 'Switch to dark theme', label);
+          assert.equal(await page.locator('[data-lucide="sun"]').isVisible(), dark, label);
+          assert.equal(await page.locator('[data-lucide="moon"]').isVisible(), !dark, label);
+        };
+        const assertInitialTheme = async (dark) => {
+          assert.deepEqual(await page.evaluate(() => window.__themeBeforeStyles),
+            { dark, bodyParsed: false, readyState: 'loading' }, `Theme must be applied before styles: ${label}`);
+          await assertTheme(dark);
+        };
+        await page.goto(url, { waitUntil: 'load' });
+        await assertInitialTheme(expectedDark);
+        if (!blockedStorage) assert.equal(await page.evaluate(() => localStorage.getItem('theme')), savedTheme ?? null,
+          'Initialization must not overwrite preferences or persist the system fallback');
+        // The accessible keyboard toggle must still work when storage throws.
+        await theme.press('Enter');
+        await assertTheme(!expectedDark);
+        if (!blockedStorage) assert.equal(await page.evaluate(() => localStorage.getItem('theme')), expectedDark ? 'light' : 'dark');
+        await page.reload({ waitUntil: 'load' });
+        await assertInitialTheme(blockedStorage ? expectedDark : !expectedDark);
+        assert.deepEqual(errors, [], label);
+      } finally { await context.close(); }
+    }
+    console.log(`Verified initial themes before styles, saved preferences and unavailable storage at ${width}px`);
+  }
+}
+
 async function main() {
   const html = await fs.readFile(path.join(root, 'index.html'), 'utf8');
   const iconCount = [...html.matchAll(/data-lucide=/g)].length;
@@ -32,6 +102,7 @@ async function main() {
   try {
     browser = await chromium.launch({ executablePath: process.env.CHROMIUM_EXECUTABLE_PATH || undefined });
     const url = `http://127.0.0.1:${server.address().port}/`;
+    await checkInitialThemes(browser, url, html);
     // The breakpoint edges catch incorrect sizes calculations as well as layout
     // regressions. Fresh contexts prevent cached large images masking selection.
     for (const width of [360, 390, 767, 768, 1024, 1440]) {

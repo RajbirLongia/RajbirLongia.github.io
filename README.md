@@ -21,6 +21,9 @@ serve the repository with any static HTTP server (for example,
 
 - `styles/tailwind.css` is the CSS entry point; `tailwind.config.cjs` scans
   `index.html`, including its inline JavaScript. Dark mode uses the `.dark` class.
+- The small inline script in the head applies the saved or system theme before
+  any styles load. Keep it synchronous and ahead of the styles to prevent a
+  light-mode flash. The end-of-body script handles the toggle and its ARIA label.
 - Keep utility class names complete (for example, `dark:block`), not assembled
   from fragments in JavaScript. If adding another HTML/JS file, include it in the
   Tailwind `content` list and rebuild. The current navigation and tabs use
@@ -87,7 +90,10 @@ npm run test:browser
 
 The browser checks cover 360, 390, 767, 768, 1024 and 1440 pixel viewports in light
 and dark themes, high-density image selection, format fallbacks, delayed icon
-loading, theme persistence, mobile navigation and keyboard tabs. Optional
+loading, theme persistence, mobile navigation and keyboard tabs. Initial-theme
+checks capture the theme before the first stylesheet is parsed on desktop and
+mobile, including saved preferences that override the system, unavailable
+storage, and reloads after keyboard toggling. Optional
 `SCREENSHOT_DIR=.qa/screenshots` saves desktop/mobile screenshots. Set
 `BASELINE_ROOT=/path/to/original-checkout` to also compare content, rendered SVGs
 and layout geometry with an earlier checkout, and save before screenshots.
